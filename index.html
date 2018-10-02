@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Interop data</title>
+
+    <script type="text/javascript" src="bundle/vendors.bundle.js"></script>
+    <script type="text/javascript" src="bundle/foam.bundle.js"></script>
+    <script type="text/javascript" src="bundle/interop.bundle.js"></script>
+  </head>
+  <body>
+    <h1 id="sec-title">Interop data</h1>
+    <div style="display: flex">
+      <section>
+        <h2 id="sec-tutorial">How to use this tool</h2>
+
+        <p>
+          <b><i>
+            Note: This tool currently iterates over thousands of data items;
+            you may need to clear a browser dialogue to "wait" for the page,
+            rather than "kill" it.
+          </i></b>
+        </p>
+
+        <h3>The data</h3>
+        <p>
+          Data items are roughly of the form:
+          <code>{id: "Interface#api", interop: [0, 1, 1, 2, 4, ...]}</code>
+          where <code>interop</code> describes a time series of the number of
+          major desktop browsers that expose <code>Interface#api</code>.
+        </p>
+        <h3>The reducer function</h3>
+        <p>
+          In the textarea write a script that will <code>return</code> a
+          function that will <code>reduce()</code> the series of
+          <code>interop</code> values of each item. API names will be listed
+          under "Output" below iff the reducer function yields a truthy value
+          over the API's data.
+        </p>
+        <h4>Inputs</h4>
+        <ol>
+          <li><code>prev</code> - The previous iteration's reducer output;
+            initially <code>undefined</code> for the first iteration of each
+            data item</li>
+          <li><code>value</code> - The interop value (an integer from 0 to 4)
+            for the current iteration</li>
+          <li><code>i</code> - The array index value within the
+            <code>interop</code> array for the current data item</li>
+          <li><code>n</code> - The length of the <code>interop</code> array for
+            the current data item</li>
+          <li><code>releaseDate</code> - A <code>Date</code> object containing
+            the release date associated with this iteration's data</li>
+          <li><code>releases</code> - An array of browser release descriptions,
+            (one for each of the four browsers) associated with this iteration's
+            data</li>
+        </ol>
+        <h4>Output</h4>
+        <p>
+          The truthiness of the value returned by the reducer after reducing the
+          whole <code>interop</code> array determines whether or not the data
+          item's <code>id</code> is included in the "Output" section below.
+        </p>
+      </section>
+      <section>
+        <h2 id="sec-reducer">Reducer</h2>
+        <textarea id="input-reducer" rows="20" cols="100">// Produce a function that finds records where:
+// 1. First release date indicates 1 or 2 browsers;
+// 2. Last release date indicates 3 browsers.
+//
+// These APIs spent the last couple years getting off the ground, but still
+// are not fully interoperable.
+
+return function(prev, value, i, n, releaseDate, releases) {
+  if (i === 0) {
+    return value > 0 && value < 3;
+  } else if (i === (n - 1)) {
+    return prev && value === 3;
+  } else {
+    return prev;
+  }
+};</textarea>
+        <br>
+        <button id="btn-run" value="Run" disabled>Run</button>
+      </section>
+    </div>
+
+    <hr>
+    <section>
+      <h2 id="sec-output">Output</h2>
+      <pre id="output-output"></pre>
+    </section>
+  </body>
+</html>
