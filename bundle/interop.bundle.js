@@ -563,8 +563,8 @@ __webpack_require__(148);
 __webpack_require__(434);
 var pkg = org.chromium.apis.web;
 
-var classURL = location.origin + '/interop/class:org.chromium.apis.web.generated.InteropData.json';
-var url = location.origin + '/interop/org.chromium.apis.web.generated.InteropData.json';
+var classURL = location.origin + location.pathname.substring(0, location.pathname.lastIndexOf('/')) + '/interop/class:org.chromium.apis.web.generated.InteropData.json';
+var url = location.origin + location.pathname.substring(0, location.pathname.lastIndexOf('/')) + '/interop/org.chromium.apis.web.generated.InteropData.json';
 
 var inputReducer = void 0;
 var outputOutput = void 0;
