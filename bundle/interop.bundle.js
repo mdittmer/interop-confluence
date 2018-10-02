@@ -595,7 +595,7 @@ var btnRun = void 0;
           dao = pkg.HttpJsonDAO.create({
             safeProtocols: [location.protocol],
             safeHostnames: [location.hostname],
-            safePathPrefixes: ['/interop/'],
+            safePathPrefixes: [location.pathname.substring(0, location.pathname.lastIndexOf('/')) + '/interop/'],
             of: InteropData,
             url: url
           });
